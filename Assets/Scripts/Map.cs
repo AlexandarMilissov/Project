@@ -47,6 +47,44 @@ public class Map : MonoBehaviour
                 t.name = $"{position}";
             }
         }
+
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeY; j++)
+            {
+                Tile tile = TileMap[i, j];
+
+                //top center
+                AddAdjacent(tile, i + 1, j);
+
+                //bottom center
+                AddAdjacent(tile, i - 1, j);
+
+                // bottom/top right
+                AddAdjacent(tile, i, j - 1);
+
+                //bottom/top left
+                AddAdjacent(tile, i, j + 1);
+
+                //peak
+                if (j % 2 == 1)
+                {
+                    //top left
+                    AddAdjacent(tile, i + 1, j + 1);
+                    //top right
+                    AddAdjacent(tile, i + 1, j - 1);
+                }
+                //basin
+                else
+                {
+                    //bottom left
+                    AddAdjacent(tile, i - 1, j + 1);
+
+                    //bottom right
+                    AddAdjacent(tile, i - 1, j - 1);
+                }
+            }
+        }
     }
 
     void ClearChildren()
@@ -63,5 +101,24 @@ public class Map : MonoBehaviour
                 DestroyImmediate(child.gameObject, false);
             }
         }
+    }
+
+    bool IsValidMapTile(int x, int y)
+    {
+        if(x < 0)
+            return false;
+        if (y < 0)
+            return false;
+        if (x >= SizeX)
+            return false;
+        if (y >= SizeY)
+            return false;
+        return true;
+    }
+
+    void AddAdjacent(Tile tile, int x, int y)
+    {
+        if (IsValidMapTile(x, y))
+            tile.Adjacent.Add(TileMap[x, y]);
     }
 }

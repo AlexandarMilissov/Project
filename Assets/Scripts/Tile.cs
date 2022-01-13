@@ -6,9 +6,11 @@ public class Tile : MonoBehaviour
 {
     public GameObject TileVisual;
     public Position Position;
+    public List<Tile> Adjacent;
 
     public void OnCreate(Position Position)
     {
+        Adjacent = new List<Tile>();
         this.Position = Position;
         SetPosition();
     }    
